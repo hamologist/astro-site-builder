@@ -23,5 +23,9 @@ export class StaticSiteBucketBuilderStack extends cdk.Stack {
       sources: [s3Deployment.Source.asset("./deploy")],
       destinationBucket: staticSiteBucket,
     });
+
+    new cdk.CfnOutput(this, 'StaticSiteBucketUrl', {
+      value: staticSiteBucket.bucketWebsiteUrl,
+    });
   }
 }
