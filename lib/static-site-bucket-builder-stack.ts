@@ -14,10 +14,17 @@ export class StaticSiteBucketBuilderStack extends cdk.Stack {
 
     const staticSiteBucket = new s3.Bucket(this, 'StaticSiteBucket', {
       bucketName: staticSiteBucketParameter.valueAsString,
-      publicReadAccess: true,
+      blockPublicAccess: {
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false,
+      },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       websiteIndexDocument: 'index.html',
     });
+
+    staticSiteBucket.grantPublicAccess();
 
     new s3Deployment.BucketDeployment(this, 'StaticSiteBucketDeployment', {
       sources: [s3Deployment.Source.asset("./deploy")],
